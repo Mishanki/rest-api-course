@@ -3,14 +3,14 @@ package main
 import (
 	"fmt"
 	"github.com/Mishanki/rest-api-course/handlers"
-	"github.com/Mishanki/rest-api-course/helpers"
+	helpers2 "github.com/Mishanki/rest-api-course/internal/helpers"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
 )
 
 func init() {
-	helpers.InitEnv()
+	helpers2.InitEnv()
 }
 
 func main() {

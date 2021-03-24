@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/Mishanki/rest-api-course/helpers"
+	"github.com/Mishanki/rest-api-course/internal/core"
 	"github.com/Mishanki/rest-api-course/model"
+	"github.com/Mishanki/rest-api-course/pkg/helpers"
 	"net/http"
 )
 
@@ -22,15 +22,18 @@ var CreateGrab = func(w http.ResponseWriter, r *http.Request) {
 	helpers.BodyJsonDecode(w, r, &ct)
 
 	if ct.A == 0 && ct.B == 0 && ct.C == 0 {
+		errMsg := core.ErrorResponseStruct{Success: false, Message: "All params cant be equal to zero", InternalStatusCode: core.INVALID_ARG}
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "All params cant be 0") // TODO json
+		json.NewEncoder(w).Encode(errMsg)
+
 		return
 	}
 
 	file, _ := json.MarshalIndent(ct, "", " ")
 	helpers.MyWrite(file)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	w.Header().Add("Content-Type", "application/json") // TODO не работает
 	json.NewEncoder(w).Encode(ct)
 
 }
